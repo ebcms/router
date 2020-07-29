@@ -1,6 +1,10 @@
 <?php
 
-namespace Ebcms\Router;
+namespace Ebcms;
+
+use Ebcms\Router\Builder;
+use Ebcms\Router\Collector;
+use Ebcms\Router\Dispatcher;
 
 class Router
 {

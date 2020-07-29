@@ -6,7 +6,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Ebcms\\Router\\": "src/"
+            "Ebcms\\": "src/"
         }
     }
 }

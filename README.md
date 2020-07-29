@@ -12,12 +12,12 @@ ebcms router
 ## 实例化
 
 ``` php
+use Ebcms\Router;
 use Ebcms\Router\Generator;
 use Ebcms\Router\Parser;
 use Ebcms\Router\Dispatcher;
 use Ebcms\Router\Collector;
 use Ebcms\Router\Builder;
-use Ebcms\Router\Router;
 
 //  普通方式实例化
 $generator = new Generator();
@@ -32,6 +32,7 @@ $router = new Router($dispatcher, $collector, $builder);
 // 依赖注入容器实例化
 $router = $container->get(Router::class);
 ```
+
 ## 代码示例
 
 ``` php
