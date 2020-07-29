@@ -1,0 +1,12 @@
+{
+    "name": "ebcms/router",
+    "description": "router",
+    "type": "library",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Ebcms\\Router\\": "src/"
+        }
+    }
+}
