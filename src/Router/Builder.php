@@ -117,8 +117,8 @@ class Builder
 
     private function checkParams($param, $binds)
     {
-        foreach ($param as $key => $value) {
-            if (isset($binds[$key]) && $binds[$key] != $value) {
+        foreach ($binds as $key => $value) {
+            if (!isset($param[$key]) || $param[$key] != $value) {
                 return false;
             }
         }
