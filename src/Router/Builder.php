@@ -102,7 +102,18 @@ class Builder
     {
         static $web_root;
         if (is_null($web_root)) {
-            $web_root = (function (): string {
+
+            if (
+                (!empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https')
+                || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+                || (!empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443')
+            ) {
+                $schema = 'https';
+            } else {
+                $schema = 'http';
+            }
+
+            $web_root = $schema . '://' . $_SERVER['HTTP_HOST'] . (function (): string {
                 $script_name = '/' . implode('/', array_filter(explode('/', $_SERVER['SCRIPT_NAME'])));
                 $request_uri = parse_url('/' . implode('/', array_filter(explode('/', $_SERVER['REQUEST_URI']))), PHP_URL_PATH);
                 if (strpos($request_uri, $script_name) === 0) {
