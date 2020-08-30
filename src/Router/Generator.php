@@ -92,14 +92,6 @@ class Generator
     ) {
         $routeStr = $routeData[0];
 
-        if (isset($this->staticRoutes[$httpMethod][$routeStr])) {
-            throw new LogicException(sprintf(
-                'Cannot register two routes matching "%s" for method "%s"',
-                $routeStr,
-                $httpMethod
-            ));
-        }
-
         if (isset($this->methodToRegexToRoutesMap[$httpMethod])) {
             foreach ($this->methodToRegexToRoutesMap[$httpMethod] as $route) {
                 if (preg_match('~^' . $route['regex'] . '$~', $routeStr)) {
@@ -132,14 +124,6 @@ class Generator
         array $binds = []
     ) {
         list($regex, $variables) = $this->buildRegexForRoute($routeData);
-
-        if (isset($this->methodToRegexToRoutesMap[$httpMethod][$regex])) {
-            throw new LogicException(sprintf(
-                'Cannot register two routes matching "%s" for method "%s"',
-                $regex,
-                $httpMethod
-            ));
-        }
 
         $this->methodToRegexToRoutesMap[$httpMethod][$regex] = [
             'handler' => $handler,
