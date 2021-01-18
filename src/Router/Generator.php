@@ -93,11 +93,7 @@ class Generator
         $routeStr = $routeData[0];
 
         if (isset($this->staticRoutes[$httpMethod][$routeStr])) {
-            throw new LogicException(sprintf(
-                'Cannot register two routes matching "%s" for method "%s"',
-                $routeStr,
-                $httpMethod
-            ));
+            return;
         }
 
         if (isset($this->methodToRegexToRoutesMap[$httpMethod])) {
@@ -134,11 +130,7 @@ class Generator
         list($regex, $variables) = $this->buildRegexForRoute($routeData);
 
         if (isset($this->methodToRegexToRoutesMap[$httpMethod][$regex])) {
-            throw new LogicException(sprintf(
-                'Cannot register two routes matching "%s" for method "%s"',
-                $regex,
-                $httpMethod
-            ));
+            return;
         }
 
         $this->methodToRegexToRoutesMap[$httpMethod][$regex] = [
@@ -189,11 +181,9 @@ class Generator
     private function regexHasCapturingGroups(string $regex): bool
     {
         if (false === strpos($regex, '(')) {
-            // Needs to have at least a ( to contain a capturing group
             return false;
         }
 
-        // Semi-accurate detection for capturing groups
         return (bool) preg_match(
             '~
                 (?:

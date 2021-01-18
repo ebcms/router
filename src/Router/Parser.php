@@ -4,11 +4,6 @@ namespace Ebcms\Router;
 
 use LogicException;
 
-/**
- * Parses route strings of the following form:
- *
- * "/user/{name}[/{id:[0-9]+}]"
- */
 class Parser
 {
 
@@ -27,10 +22,8 @@ REGEX;
         $routeWithoutClosingOptionals = rtrim($route, ']');
         $numOptionals = strlen($route) - strlen($routeWithoutClosingOptionals);
 
-        // Split on [ while skipping placeholders
         $segments = preg_split('~' . self::VARIABLE_REGEX . '(*SKIP)(*F) | \[~x', $routeWithoutClosingOptionals);
         if ($numOptionals !== count($segments) - 1) {
-            // If there are any ] in the middle of the route, throw a more specific error message
             if (preg_match('~' . self::VARIABLE_REGEX . '(*SKIP)(*F) | \]~x', $routeWithoutClosingOptionals)) {
                 throw new LogicException('Optional segments can only occur at the end of a route');
             }

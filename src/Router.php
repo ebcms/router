@@ -9,11 +9,6 @@ use Ebcms\Router\Dispatcher;
 class Router
 {
 
-    /**
-     * @var Builder $builder
-     * @var Dispatcher $dispatcher
-     * @var Collector $collector
-     */
     protected $builder;
     protected $collector;
     protected $dispatcher;

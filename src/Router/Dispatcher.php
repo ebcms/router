@@ -32,7 +32,6 @@ class Dispatcher
             }
         }
 
-        // For HEAD requests, attempt fallback to GET
         if ($httpMethod === 'HEAD') {
             if (isset($staticRouteMap['GET'][$uri])) {
                 $staticRouteData = $staticRouteMap['GET'][$uri];
@@ -46,7 +45,6 @@ class Dispatcher
             }
         }
 
-        // If nothing else matches, try fallback routes
         if (isset($staticRouteMap['*'][$uri])) {
             $staticRouteData = $staticRouteMap['*'][$uri];
             return [self::FOUND, $staticRouteData['handler'], [], $staticRouteData['middlewares'], $staticRouteData['binds']];
@@ -58,7 +56,6 @@ class Dispatcher
             }
         }
 
-        // Find allowed methods for this URI by matching against all other HTTP methods as well
         $allowedMethods = [];
 
         foreach ($staticRouteMap as $method => $uriMap) {
@@ -78,7 +75,6 @@ class Dispatcher
             }
         }
 
-        // If there are no allowed methods the route simply does not exist
         if ($allowedMethods) {
             return [self::METHOD_NOT_ALLOWED, $allowedMethods];
         }
