@@ -9,9 +9,16 @@ class Builder
     protected $staticRouteMap = [];
     protected $variableRouteData = [];
 
+    private $nameCreater = [];
+
     public function __construct(Generator $generator)
     {
         $this->generator = $generator;
+    }
+
+    public function addCreater(callable $callable)
+    {
+        $this->nameCreater[] = $callable;
     }
 
     public function build(string $name, array $param = [], string $method = 'GET'): ?string
@@ -78,6 +85,9 @@ class Builder
             list($staticRouteMap, $variableRouteData) = $this->generator->getData();
             foreach ($staticRouteMap as $method => $routes) {
                 foreach ($routes as $route) {
+                    if (!$route['name']) {
+                        $this->filterRoute($route);
+                    }
                     if ($route['name']) {
                         $route['method'] = $method;
                         $this->staticRouteMap[$route['name']][] = $route;
@@ -88,6 +98,9 @@ class Builder
             foreach ($variableRouteData as $method => $chunks) {
                 foreach ($chunks as $chunk) {
                     foreach ($chunk['routeMap'] as $route) {
+                        if (!$route['name']) {
+                            $this->filterRoute($route);
+                        }
                         if ($route['name']) {
                             $route['method'] = $method;
                             $this->variableRouteData[$route['name']][] = $route;
@@ -134,5 +147,16 @@ class Builder
             }
         }
         return true;
+    }
+
+    private function filterRoute(array &$route)
+    {
+        foreach ($this->nameCreater as $creater) {
+            if (!$route['name']) {
+                $creater($route);
+            } else {
+                return;
+            }
+        }
     }
 }
